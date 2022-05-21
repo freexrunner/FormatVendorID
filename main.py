@@ -11,7 +11,7 @@ from PyQt5 import uic
 from vendor_id import *
 
 
-class FormatVendorID(QtWidgets.QMainWidow) :
+class FormatVendorID(QtWidgets.QMainWindow) :
     def __init__(self, parent=None):
         QtWidgets.QWidget.__init__(self, parent)
         self.ui = Ui_MainWindow()
