@@ -8,7 +8,7 @@ Created on Sat May 21 22:55:09 2022
 
 import sys
 from PyQt5 import uic
-from vendor_id import *
+from vendor_id_ui import *
 
 
 class FormatVendorID(QtWidgets.QMainWindow) :

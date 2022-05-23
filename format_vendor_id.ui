@@ -459,9 +459,9 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>30</x>
       <y>65</y>
-      <width>71</width>
+      <width>91</width>
       <height>21</height>
      </rect>
     </property>
@@ -491,9 +491,9 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>30</x>
       <y>100</y>
-      <width>81</width>
+      <width>91</width>
       <height>21</height>
      </rect>
     </property>
@@ -527,9 +527,9 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>30</x>
       <y>140</y>
-      <width>81</width>
+      <width>91</width>
       <height>21</height>
      </rect>
     </property>
@@ -543,9 +543,9 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>190</y>
-      <width>101</width>
+      <width>141</width>
       <height>21</height>
      </rect>
     </property>
@@ -559,9 +559,9 @@
    <widget class="QRadioButton" name="model_snr">
     <property name="geometry">
      <rect>
-      <x>130</x>
+      <x>150</x>
       <y>190</y>
-      <width>131</width>
+      <width>151</width>
       <height>24</height>
      </rect>
     </property>
@@ -572,7 +572,7 @@
    <widget class="QRadioButton" name="model_bo">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>310</x>
       <y>190</y>
       <width>131</width>
       <height>24</height>
@@ -598,9 +598,9 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>0</x>
       <y>20</y>
-      <width>101</width>
+      <width>121</width>
       <height>21</height>
      </rect>
     </property>
@@ -616,7 +616,7 @@
      <rect>
       <x>290</x>
       <y>20</y>
-      <width>101</width>
+      <width>131</width>
       <height>21</height>
      </rect>
     </property>
@@ -630,7 +630,7 @@
    <widget class="QLabel" name="int_state">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>420</x>
       <y>20</y>
       <width>101</width>
       <height>21</height>
