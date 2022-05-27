@@ -9,7 +9,7 @@ Created on Sat May 21 22:55:09 2022
 import sys
 from PyQt5 import uic
 
-from PaperbackWriter import PaperbackWriter
+from writer import Writer
 from vendor_id_ui import *
 
 
@@ -23,9 +23,15 @@ class FormatVendorID(QtWidgets.QMainWindow):
         self.radioGroup = QtWidgets.QButtonGroup()
         self.radioGroup.addButton(self.ui.model_snr, 0)
         self.radioGroup.addButton(self.ui.model_bo, 1)
-        #self.model = self.radioGroup.checkedId()
+        self.model = self.radioGroup.checkedId()
 
         self.ui.button_start.clicked.connect(self.start)
+
+        self.process_status = "Stop"
+        self.updateUI()
+
+    def button_click(self):
+        pass
 
 
 
@@ -34,20 +40,16 @@ class FormatVendorID(QtWidgets.QMainWindow):
         ip_address = self.ui.ip_address.text()
         username = self.ui.input_username.text()
         password = self.ui.input_password.text()
-        self.writer = PaperbackWriter(int_name, ip_address, username, password)
-
+        self.writer = Writer(int_name, ip_address, username, password)
 
     def start(self):
         self.check_input_data()
-        test_result = self.writer.start_write(self.radioGroup.checkedId())
-        self.updateUI()
+        self.writer.start_write(self.model)
         #pass
+
 
     def updateUI(self):
-        self.ui.out_text.setText("string_test")
-        #pass
-
-
+        pass
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
