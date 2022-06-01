@@ -24,16 +24,15 @@ class FormatVendorID(QtWidgets.QMainWindow):
         self.radioGroup.addButton(self.ui.model_snr, 0)
         self.radioGroup.addButton(self.ui.model_bo, 1)
         self.model = self.radioGroup.checkedId()
+        # self.model = 1
 
         self.ui.button_start.clicked.connect(self.start)
 
-        self.process_status = "Stop"
-        self.updateUI()
+        self.process_status = 'Stop'
+        # self.updateUI()
 
     def button_click(self):
         pass
-
-
 
     def check_input_data(self):
         int_name = self.ui.int_name.text()
@@ -44,9 +43,11 @@ class FormatVendorID(QtWidgets.QMainWindow):
 
     def start(self):
         self.check_input_data()
-        self.writer.start_write(self.model)
-        #pass
+        if self.writer.interface_status():
+            self.writer.start_write(self.model)
 
+        # self.writer.start_write(self.model)
+        #pass
 
     def updateUI(self):
         pass
