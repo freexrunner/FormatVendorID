@@ -10,6 +10,8 @@ def to_bytes(line):
 
 commands_snr = ['gccli sys vendor HWTC', 'gccli sys vendorid HWTC', 'gccli sys save']
 commands_bo = ['flash set PON_VENDOR_ID HWTC', 'flash set GPON_SN HWTC00123456']
+commands_bo_test = ['show version', 'show version']
+
 
 
 class Writer:
@@ -36,7 +38,7 @@ class Writer:
                     time.sleep(1)
                 telnet.close()
             elif terminal_model == 1:
-                for command in commands_bo:
+                for command in commands_bo_test:
                     telnet.write(to_bytes(command))
                     time.sleep(1)
                 telnet.close()
@@ -57,4 +59,5 @@ class Writer:
         # pass
 
     def check_host_connect(self):
-        pass
+        # сделать проверку доступности терминала
+        return False # временная пришлепка
