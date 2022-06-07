@@ -1,7 +1,8 @@
+import os
 import telnetlib
 import subprocess
 import time
-import getpass
+# import getpass
 
 
 def to_bytes(line):
@@ -22,8 +23,7 @@ class Writer:
         self.password = password
 
     def start_write(self, terminal_model):
-        # self.interface_status()
-        # self.check_host_connect()
+        # отправка команд по Telnet
         with telnetlib.Telnet(self.ip_address) as telnet:
             time.sleep(1)
             telnet.read_until(b"Username", timeout=1)
@@ -48,6 +48,7 @@ class Writer:
         # pass
 
     def interface_status(self):
+        # проверка состояния сетевого нтерфейса
         int_file = '/sys/class/net/' + self.int_name + '/operstate'
         with open(int_file) as f:
             int_status = f.readline().rstrip()
@@ -55,9 +56,11 @@ class Writer:
             return True
         elif int_status == 'down':
             return False
-        # return int_status
-        # pass
 
     def check_host_connect(self):
-        # сделать проверку доступности терминала
-        return False # временная пришлепка
+        # проверка доступности терминала
+        response = os.system("ping -c 1 " + self.ip_address)
+        if response == 0:
+            return True
+        else:
+            return False
