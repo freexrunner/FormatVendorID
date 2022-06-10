@@ -11,6 +11,7 @@ import time
 # from PyQt5 import uic
 # from threading import Thread
 from writer import Writer
+from write_tread import *
 from vendor_id_ui import *
 
 class FormatVendorID(QtWidgets.QMainWindow):
@@ -41,6 +42,10 @@ class FormatVendorID(QtWidgets.QMainWindow):
         self.updateUI("")
         self.check_input_data()
         self.updateUI("Waiting to connect")
+
+        self.test_thread = TestTread(self.writer.int_name)
+
+
         if self.ready_to_start and self.wait_to_connect():
             self.updateUI("Terminal connected. Writing")
             self.writer.start_write(self.model)
