@@ -16,8 +16,8 @@ commands_bo_test = ['show version', 'show version']
 
 
 class Writer:
-    def __init__(self, int_name, ip_address, username, password):
-        self.int_name = int_name
+    def __init__(self, ip_address, username, password):
+        # self.int_name = int_name
         self.ip_address = ip_address
         self.username = username
         self.password = password
@@ -47,15 +47,15 @@ class Writer:
         telnet.close()
         # pass
 
-    def interface_status(self):
-        # проверка состояния сетевого нтерфейса
-        int_file = '/sys/class/net/' + self.int_name + '/operstate'
-        with open(int_file) as f:
-            int_status = f.readline().rstrip()
-        if int_status == 'up':
-            return True
-        elif int_status == 'down':
-            return False
+    # def interface_status(self):
+    #     # проверка состояния сетевого нтерфейса
+    #     int_file = '/sys/class/net/' + self.int_name + '/operstate'
+    #     with open(int_file) as f:
+    #         int_status = f.readline().rstrip()
+    #     if int_status == 'up':
+    #         return True
+    #     elif int_status == 'down':
+    #         return False
 
     def check_host_connect(self):
         # проверка доступности терминала

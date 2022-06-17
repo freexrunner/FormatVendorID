@@ -8,11 +8,13 @@ Created on Sat May 21 22:55:09 2022
 
 import sys
 import time
-# from PyQt5 import uic
+from PyQt5 import QtCore
 # from threading import Thread
 from writer import Writer
-from write_tread import *
+from interface_thread import InterfaceStatusThread
+# from write_tread import *
 from vendor_id_ui import *
+
 
 class FormatVendorID(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -21,6 +23,7 @@ class FormatVendorID(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
 
         self.ready_to_start = False
+        self.running = False
 
         self.radioGroup = QtWidgets.QButtonGroup()
         self.radioGroup.addButton(self.ui.model_snr, 0)
@@ -28,29 +31,43 @@ class FormatVendorID(QtWidgets.QMainWindow):
         # self.model = self.radioGroup.checkedId()
         self.ui.button_start.clicked.connect(self.start)
 
+
     def check_input_data(self):
         # добавить проверку корректности исходных значений
-        int_name = self.ui.int_name.text()
+        self.int_name = self.ui.int_name.text()
         ip_address = self.ui.ip_address.text()
         username = self.ui.input_username.text()
         password = self.ui.input_password.text()
         self.model = self.radioGroup.checkedId()
-        self.writer = Writer(int_name, ip_address, username, password)
+        self.writer = Writer(ip_address, username, password)
         self.ready_to_start = True
 
     def start(self):
-        self.updateUI("")
-        self.check_input_data()
-        self.updateUI("Waiting to connect")
+        if not self.running:
+            self.check_input_data()
+            self.interface_thread = InterfaceStatusThread(self.int_name)
+            self.interface_thread.interface_signal.connect(self.update_interface_status)
+            self.interface_thread.start()
+            self.ui.button_start.setText("Stop")
+            self.running = True
+        else:
+            self.interface_thread.running = False
+            self.ui.button_start.setText("Start")
+            self.running = False
 
-        self.test_thread = TestTread(self.writer.int_name)
 
+        # self.updateUI("")
+        # self.check_input_data()
+        # # self.updateUI("Waiting to connect")
+        # self.test_thread = InterfaceStatusThread(self.int_name)
+        # self.test_thread.test_signal.connect(self.updateUI)
+        # self.test_thread.start()
 
-        if self.ready_to_start and self.wait_to_connect():
-            self.updateUI("Terminal connected. Writing")
-            self.writer.start_write(self.model)
-            self.updateUI("Writing complete! Connect next terminal and click Start button")
-            self.ready_to_start = False
+        # if self.ready_to_start and self.wait_to_connect():
+        #     self.updateUI("Terminal connected. Writing")
+        #     self.writer.start_write(self.model)
+        #     self.updateUI("Writing complete! Connect next terminal and click Start button")
+        #     self.ready_to_start = False
 
     def wait_to_connect(self):
         if self.writer.interface_status():
@@ -62,15 +79,17 @@ class FormatVendorID(QtWidgets.QMainWindow):
                 else:
                     time.sleep(1)
                     delay -= 1
-            self.updateUI("Terminal is not available")
+            self.update_interface_status("Terminal is not available")
             return False
         else:
-            self.updateUI("Not connected")
+            self.update_interface_status("Not connected")
             return False
 
-    def updateUI(self, message):
+    def update_interface_status(self, int_status_str):
+        self.ui.int_state.setText(int_status_str)
+
+    def update_message(self, message):
         self.ui.out_text.setText(message)
-        # pass
 
 
 if __name__ == "__main__":
