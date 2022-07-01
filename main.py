@@ -43,31 +43,39 @@ class FormatVendorID(QtWidgets.QMainWindow):
         self.ready_to_start = True
 
     def start(self):
-        if not self.running:
-            self.check_input_data()
-            self.interface_thread = InterfaceStatusThread(self.int_name)
-            self.interface_thread.interface_signal.connect(self.update_interface_status)
-            self.interface_thread.start()
-            self.ui.button_start.setText("Stop")
-            self.running = True
-        else:
-            self.interface_thread.running = False
-            self.ui.button_start.setText("Start")
-            self.running = False
+        # # запуск потока
+        # if not self.running:
+        #     self.check_input_data()
+        #     self.interface_thread = InterfaceStatusThread(self.int_name)
+        #     self.interface_thread.interface_signal.connect(self.update_interface_status)
+        #     self.interface_thread.start()
+        #     self.ui.button_start.setText("Stop")
+        #     self.running = True
+        # else:
+        #     self.interface_thread.running = False
+        #     self.ui.button_start.setText("Start")
+        #     self.running = False
 
 
-        # self.updateUI("")
+
         # self.check_input_data()
         # # self.updateUI("Waiting to connect")
         # self.test_thread = InterfaceStatusThread(self.int_name)
         # self.test_thread.test_signal.connect(self.updateUI)
         # self.test_thread.start()
 
-        # if self.ready_to_start and self.wait_to_connect():
-        #     self.updateUI("Terminal connected. Writing")
-        #     self.writer.start_write(self.model)
-        #     self.updateUI("Writing complete! Connect next terminal and click Start button")
-        #     self.ready_to_start = False
+##########################################################################
+        self.check_input_data()
+        self.updateUI("")
+        if self.ready_to_start and self.wait_to_connect():
+            self.updateUI("Terminal connected. Writing")
+            self.writer.start_write(self.model)
+            self.updateUI("Writing complete! Connect next terminal and click Start button")
+            self.ready_to_start = False
+
+    def updateUI(self, text):
+        self.ui.out_text.setText(text)
+
 
     def wait_to_connect(self):
         if self.writer.interface_status():

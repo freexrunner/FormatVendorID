@@ -12,6 +12,7 @@ def to_bytes(line):
 commands_snr = ['gccli sys vendor HWTC', 'gccli sys vendorid HWTC', 'gccli sys save']
 commands_bo = ['flash set PON_VENDOR_ID HWTC', 'flash set GPON_SN HWTC00123456']
 commands_bo_test = ['show version', 'show version']
+commands_snr_test = ['gccli sys show', 'gccli sys version', 'gccli sys vendorid']
 
 
 
@@ -33,7 +34,7 @@ class Writer:
             telnet.write(to_bytes(self.password))
             time.sleep(1)
             if terminal_model == 0:
-                for command in commands_snr:
+                for command in commands_snr_test:
                     telnet.write(to_bytes(command))
                     time.sleep(1)
                 telnet.close()
@@ -47,15 +48,16 @@ class Writer:
         telnet.close()
         # pass
 
-    # def interface_status(self):
-    #     # проверка состояния сетевого нтерфейса
-    #     int_file = '/sys/class/net/' + self.int_name + '/operstate'
-    #     with open(int_file) as f:
-    #         int_status = f.readline().rstrip()
-    #     if int_status == 'up':
-    #         return True
-    #     elif int_status == 'down':
-    #         return False
+    def interface_status(self):
+        # проверка состояния сетевого нтерфейса
+        # int_file = '/sys/class/net/' + self.int_name + '/operstate'
+        int_file = '/sys/class/net/enp3s0/operstate'
+        with open(int_file) as f:
+            int_status = f.readline().rstrip()
+        if int_status == 'up':
+            return True
+        elif int_status == 'down':
+            return False
 
     def check_host_connect(self):
         # проверка доступности терминала
