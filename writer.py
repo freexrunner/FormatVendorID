@@ -26,13 +26,13 @@ class Writer:
     def start_write(self, terminal_model):
         # отправка команд по Telnet
         with telnetlib.Telnet(self.ip_address) as telnet:
-            time.sleep(1)
+            # time.sleep(1)
             telnet.read_until(b"Username", timeout=1)
             telnet.write(to_bytes(self.username))
-            time.sleep(1)
+            # time.sleep(1)
             telnet.read_until(b"Password", timeout=1)
             telnet.write(to_bytes(self.password))
-            time.sleep(1)
+            # time.sleep(1)
             if terminal_model == 0:
                 for command in commands_snr_test:
                     telnet.write(to_bytes(command))

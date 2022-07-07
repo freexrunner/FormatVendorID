@@ -20,6 +20,12 @@ from vendor_id_ui import *
 class FormatVendorID(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         QtWidgets.QWidget.__init__(self, parent)
+        self.model = None
+        self.password = None
+        self.username = None
+        self.ip_address = None
+        self.int_name = None
+        self.write_thread = None
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -31,7 +37,6 @@ class FormatVendorID(QtWidgets.QMainWindow):
         self.radioGroup.addButton(self.ui.model_bo, 1)
         # self.model = self.radioGroup.checkedId()
         self.ui.button_start.clicked.connect(self.start)
-
 
     def check_input_data(self):
         # добавить проверку корректности исходных значений
@@ -48,9 +53,8 @@ class FormatVendorID(QtWidgets.QMainWindow):
         self.check_input_data()
         self.write_thread = WritterThread(self.int_name, self.ip_address, self.username, self.password, self.model)
         self.write_thread.message_signal.connect(self.update_message)
+        self.write_thread.interface_signal.connect(self.update_interface_status)
         self.write_thread.start()
-
-
 
         # # запуск потока interface_thread
         # if not self.running:
@@ -71,18 +75,18 @@ class FormatVendorID(QtWidgets.QMainWindow):
         # self.test_thread.test_signal.connect(self.updateUI)
         # self.test_thread.start()
 
-##########################################################################
-        # Одиночная запись по кнопке
+    ##########################################################################
+    # Одиночная запись по кнопке
 
-        # self.check_input_data()
-        # self.update_message("")
-        # if self.ready_to_start and self.wait_to_connect():
-        #     self.update_message("Terminal connected. Writing")
-        #     self.writer.start_write(self.model)
-        #     self.update_message("Writing complete! Connect next terminal and click Start button")
-        #     self.ready_to_start = False
+    # self.check_input_data()
+    # self.update_message("")
+    # if self.ready_to_start and self.wait_to_connect():
+    #     self.update_message("Terminal connected. Writing")
+    #     self.writer.start_write(self.model)
+    #     self.update_message("Writing complete! Connect next terminal and click Start button")
+    #     self.ready_to_start = False
 
-##########################################################################
+    ##########################################################################
 
     # def wait_to_connect(self):
     #     if self.writer.interface_status():
