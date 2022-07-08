@@ -53,8 +53,13 @@ class FormatVendorID(QtWidgets.QMainWindow):
         self.check_input_data()
         self.write_thread = WritterThread(self.int_name, self.ip_address, self.username, self.password, self.model)
         self.write_thread.message_signal.connect(self.update_message)
-        self.write_thread.interface_signal.connect(self.update_interface_status)
+        # self.write_thread.interface_signal.connect(self.update_interface_status)
         self.write_thread.start()
+
+        self.interface_thread = InterfaceStatusThread(self.int_name)
+        self.interface_thread.interface_signal.connect(self.update_interface_status)
+        # self.interface_thread.changed_signal.connect(self.check_change)
+        self.interface_thread.start()
 
         # # запуск потока interface_thread
         # if not self.running:

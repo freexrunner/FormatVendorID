@@ -6,7 +6,7 @@ from interface_thread import InterfaceStatusThread
 
 class WritterThread(QtCore.QThread):
     message_signal = QtCore.pyqtSignal(str)
-    interface_signal = QtCore.pyqtSignal(str)
+    # interface_signal = QtCore.pyqtSignal(str)
 
     def __init__(self, int_name, ip_address, username, password, model):
         super(WritterThread, self).__init__()
@@ -29,17 +29,12 @@ class WritterThread(QtCore.QThread):
 
     def run(self) -> None:
 
-        self.interface_thread = InterfaceStatusThread(self.int_name)
-        self.interface_thread.interface_signal.connect(self.check_status)
-        self.interface_thread.changed_signal.connect(self.check_change)
-        self.interface_thread.start()
+        # self.interface_thread = InterfaceStatusThread(self.int_name)
+        # self.interface_thread.interface_signal.connect(self.check_status)
+        # self.interface_thread.changed_signal.connect(self.check_change)
+        # self.interface_thread.start()
 
         self.single_write()
-        self.step += 1
-
-
-
-        # self.start_process()
 
     def single_write(self):
         # одиночный телнет сеанс
@@ -76,6 +71,3 @@ class WritterThread(QtCore.QThread):
 
     def start_process(self):
         pass
-
-
-
