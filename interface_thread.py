@@ -3,13 +3,12 @@ from PyQt5 import QtCore
 
 class InterfaceStatusThread(QtCore.QThread):
     interface_signal = QtCore.pyqtSignal(str)
-    changed_signal = QtCore.pyqtSignal(bool)
 
     def __init__(self, int_name):
         super().__init__()
         self.int_name = int_name
         self.interface_running = False
-        self.int_change = "down"
+        # self.int_change = 'down'
 
     def run(self) -> None:
         self.interface_running = True
@@ -20,8 +19,4 @@ class InterfaceStatusThread(QtCore.QThread):
             with open(int_file) as f:
                 int_status = f.readline().rstrip()
                 self.interface_signal.emit(int_status)
-                if self.int_change != int_status:
-                    self.changed_signal.emit(True)
-                    self.int_change == int_status
-                else:
-                    self.changed_signal.emit(False)
+

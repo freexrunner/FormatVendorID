@@ -12,7 +12,7 @@ from PyQt5 import QtCore
 # from threading import Thread
 from writer import Writer
 from interface_thread import InterfaceStatusThread
-from write_tread import WritterThread
+from write_tread import WriterThread
 # from write_tread import *
 from vendor_id_ui import *
 
@@ -20,6 +20,7 @@ from vendor_id_ui import *
 class FormatVendorID(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         QtWidgets.QWidget.__init__(self, parent)
+        self.interface_thread = None
         self.model = None
         self.password = None
         self.username = None
@@ -37,6 +38,7 @@ class FormatVendorID(QtWidgets.QMainWindow):
         self.radioGroup.addButton(self.ui.model_bo, 1)
         # self.model = self.radioGroup.checkedId()
         self.ui.button_start.clicked.connect(self.start)
+        self.ui.out_text.setText("Подключите терминал и нажмите Start")
 
     def check_input_data(self):
         # добавить проверку корректности исходных значений
@@ -51,15 +53,18 @@ class FormatVendorID(QtWidgets.QMainWindow):
     def start(self):
         # запуск потока writerThread
         self.check_input_data()
-        self.write_thread = WritterThread(self.int_name, self.ip_address, self.username, self.password, self.model)
-        self.write_thread.message_signal.connect(self.update_message)
-        # self.write_thread.interface_signal.connect(self.update_interface_status)
-        self.write_thread.start()
-
+        self.write_thread = WriterThread(self.int_name, self.ip_address, self.username, self.password, self.model)
         self.interface_thread = InterfaceStatusThread(self.int_name)
         self.interface_thread.interface_signal.connect(self.update_interface_status)
-        # self.interface_thread.changed_signal.connect(self.check_change)
+        self.write_thread.message_signal.connect(self.update_message)
+        # self.write_thread.interface_signal.connect(self.update_interface_status)
+        
         self.interface_thread.start()
+        self.write_thread.start()
+
+
+
+
 
         # # запуск потока interface_thread
         # if not self.running:
@@ -114,7 +119,6 @@ class FormatVendorID(QtWidgets.QMainWindow):
 
     def update_message(self, message):
         self.ui.out_text.setText(message)
-
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
