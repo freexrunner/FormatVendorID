@@ -1,4 +1,4 @@
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtWidgets
 
 
 class InterfaceStatusThread(QtCore.QThread):
@@ -19,4 +19,9 @@ class InterfaceStatusThread(QtCore.QThread):
             with open(int_file) as f:
                 int_status = f.readline().rstrip()
                 self.interface_signal.emit(int_status)
+
+
+
+
+
 

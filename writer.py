@@ -34,12 +34,12 @@ class Writer:
             telnet.write(to_bytes(self.password))
             # time.sleep(1)
             if terminal_model == 0:
-                for command in commands_snr_test:
+                for command in commands_snr:
                     telnet.write(to_bytes(command))
                     time.sleep(1)
                 telnet.close()
             elif terminal_model == 1:
-                for command in commands_bo_test:
+                for command in commands_bo:
                     telnet.write(to_bytes(command))
                     time.sleep(1)
                 telnet.close()

@@ -30,8 +30,7 @@ class FormatVendorID(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ready_to_start = False
-        self.running = False
+        # self.running = False
 
         self.radioGroup = QtWidgets.QButtonGroup()
         self.radioGroup.addButton(self.ui.model_snr, 0)
@@ -43,82 +42,37 @@ class FormatVendorID(QtWidgets.QMainWindow):
     def check_input_data(self):
         # добавить проверку корректности исходных значений
         self.int_name = self.ui.int_name.text()
-        self.ip_address = self.ui.ip_address.text()
+        self.ip_address = self.ui.ip_address.text().replace(',', '.')
         self.username = self.ui.input_username.text()
         self.password = self.ui.input_password.text()
         self.model = self.radioGroup.checkedId()
-        # self.writer = Writer(ip_address, username, password)
-        self.ready_to_start = True
+
+        if len(self.int_name) == 0 or len(self.ip_address) == 0 or len(self.username) == 0 or len(self.password) == 0:
+            msg_empty = QtWidgets.QMessageBox()
+            msg_empty.setWindowTitle('Ошибка ввода данных')
+            msg_empty.setText('Укажите все исходные данные')
+            msg_empty.setIcon(msg_empty.Warning)
+            msg_empty.exec()
+            return False
+        else:
+            return True
 
     def start(self):
-        # запуск потока writerThread
-        self.check_input_data()
-        self.write_thread = WriterThread(self.int_name, self.ip_address, self.username, self.password, self.model)
-        self.interface_thread = InterfaceStatusThread(self.int_name)
-        self.interface_thread.interface_signal.connect(self.update_interface_status)
-        self.write_thread.message_signal.connect(self.update_message)
-        # self.write_thread.interface_signal.connect(self.update_interface_status)
-        
-        self.interface_thread.start()
-        self.write_thread.start()
+        if self.check_input_data():
+            self.write_thread = WriterThread(self.int_name, self.ip_address, self.username, self.password, self.model)
+            self.interface_thread = InterfaceStatusThread(self.int_name)
+            self.interface_thread.interface_signal.connect(self.update_interface_status)
+            self.write_thread.message_signal.connect(self.update_message)
 
-
-
-
-
-        # # запуск потока interface_thread
-        # if not self.running:
-        #     self.check_input_data()
-        #     self.interface_thread = InterfaceStatusThread(self.int_name)
-        #     self.interface_thread.interface_signal.connect(self.update_interface_status)
-        #     self.interface_thread.start()
-        #     self.ui.button_start.setText("Stop")
-        #     self.running = True
-        # else:
-        #     self.interface_thread.running = False
-        #     self.ui.button_start.setText("Start")
-        #     self.running = False
-
-        # self.check_input_data()
-        # # self.updateUI("Waiting to connect")
-        # self.test_thread = InterfaceStatusThread(self.int_name)
-        # self.test_thread.test_signal.connect(self.updateUI)
-        # self.test_thread.start()
-
-    ##########################################################################
-    # Одиночная запись по кнопке
-
-    # self.check_input_data()
-    # self.update_message("")
-    # if self.ready_to_start and self.wait_to_connect():
-    #     self.update_message("Terminal connected. Writing")
-    #     self.writer.start_write(self.model)
-    #     self.update_message("Writing complete! Connect next terminal and click Start button")
-    #     self.ready_to_start = False
-
-    ##########################################################################
-
-    # def wait_to_connect(self):
-    #     if self.writer.interface_status():
-    #         delay = 5
-    #         while delay > 0:
-    #             if self.writer.check_host_connect():
-    #                 return True
-    #                 break
-    #             else:
-    #                 time.sleep(1)
-    #                 delay -= 1
-    #         self.update_interface_status("Terminal is not available")
-    #         return False
-    #     else:
-    #         self.update_interface_status("Not connected")
-    #         return False
+            self.interface_thread.start()
+            self.write_thread.start()
 
     def update_interface_status(self, int_status_str):
         self.ui.int_state.setText(int_status_str)
 
     def update_message(self, message):
         self.ui.out_text.setText(message)
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

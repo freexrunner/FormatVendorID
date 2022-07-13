@@ -37,7 +37,7 @@ class WriterThread(QtCore.QThread):
 
     def wait_to_connect(self):
         if self.writer.interface_status():
-            delay = 60
+            delay = 30
             while delay > 0:
                 if self.writer.check_host_connect():
                     return True
